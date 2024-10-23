@@ -7,3 +7,7 @@ pub struct User {
     pub userid: i64,
     pub fullname: String,
 }
+
+pub(crate) trait GetUserData {
+     async fn get_user_info(token: &str) -> Result<User, reqwest::Error>;
+}

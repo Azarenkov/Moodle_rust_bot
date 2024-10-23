@@ -10,3 +10,7 @@ pub struct Course {
     // start_date: i64,
     // end_date: i64,
 }
+
+pub(crate) trait GetCoursesData {
+    async fn get_courses(token: &str) -> Result<Vec<Course>, reqwest::Error>;
+}
