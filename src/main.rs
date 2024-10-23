@@ -3,23 +3,11 @@ use reqwest::Client;
 use std::fmt::Display;
 use serde_json::Value; // Используем serde_json для работы с JSON как с универсальной структурой
 use tokio;
+// use firebase_rs::*;
 
-#[derive(Debug, Deserialize)]
-struct User {
-    username: String,
-    userid: i64,
-    fullname: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct Course {
-    id: i32,
-    fullname: String,
-    // category: String,
-    completed: Option<bool>,
-    // start_date: i64,
-    // end_date: i64,
-}
+mod models;
+use models::course::Course;
+use models::user::User;
 
 enum Functions {
     GetUserData,
