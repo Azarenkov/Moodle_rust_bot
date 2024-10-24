@@ -10,7 +10,7 @@ impl GetUserData for User {
         let function = Functions::GetUserData.new();
     
         let url = format!(
-            "https://moodle.astanait.edu.kz/webservice/rest/server.php?wstoken={}&wsfunction={}",
+            "https://moodle.astanait.edu.kz/webservice/rest/server.php?wstoken={}&wsfunction={}&moodlewsrestformat=json",
             token,
             function,
         );

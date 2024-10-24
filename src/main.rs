@@ -1,23 +1,31 @@
-use serde::Deserialize;
-use reqwest::Client;
-use std::fmt::Display;
-use serde_json::Value; // Используем serde_json для работы с JSON как с универсальной структурой
+// use serde::Deserialize;
+// use reqwest::Client;
+// use std::fmt::Display;
+// use serde_json::Value;
 use tokio;
 // use firebase_rs::*;
 
 mod models;
 mod controllers;
-use models::course::{GetCoursesData ,Course};
-use models::user::{GetUserData, User};
+
+use models::{course, user, deadline, grade, grades_overview};
+use course::{GetCoursesData ,Course};
+use user::{GetUserData, User};
+use deadline::{Events, GetDeadline};
+use grade::{GetGrades, Grades};
+use grades_overview::{GetGradesOverview, GradesOverview};
+
 
 #[tokio::main]
 async fn main() {
     let token = "711abc349948337f8b97cbb01b76adf5"; 
-    // let user_ids = vec![1, 2]; 
-    // Functions::new(&Functions::GetUserData);
+    let user_id = "19401";
+    let course_id = "5257";
+
     match User::get_user_info(token).await {
         Ok(user_response) => {
-            println!("{}", user_response.fullname);
+            println!("{} {}", user_response.fullname, user_response.userid);
+            println!("{}","-".repeat(150));
         }
         Err(e) => eprintln!("Error: {}", e),
     }
@@ -26,7 +34,32 @@ async fn main() {
             for course in courses {
                 println!("Course ID: {}, Full Name:{} , Completed:{}", course.id, course.fullname, course.completed.unwrap_or_default());
             }
+            println!("{}","-".repeat(150));
         }
         Err(e) => eprintln!("Error: {}", e),
+    }
+
+    match Events::get_deadline(token).await {
+        Ok(deadlines) => {
+            println!("{:#?}", deadlines);
+            println!("{}","-".repeat(150));
+        }
+        Err(e) => eprintln!("Error: {}", e),
+    }
+   
+    match Grades::get_grades(token, user_id, course_id).await {
+        Ok(grades) => {
+            println!("{:#?}", grades);
+            println!("{}","-".repeat(150));
+        }
+        Err(e) => eprintln!("Error: {}", e),
+    }
+
+    match GradesOverview::get_grades_overview(token).await {
+        Ok(grades_overview) => {
+            println!("{:#?}", grades_overview);
+            println!("{}","-".repeat(150));
+        }
+        Err(e) => eprintln!("Error : {}", e),
     }
 }
